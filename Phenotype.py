@@ -1,7 +1,8 @@
 import numpy as np
 
+
 class Phenotype:
-    def __init__(self, size, flow_matrix, distance_matrix, factories = None, division_point_ratio=0.5, mutation_prob = 0.2):
+    def __init__(self, size, flow_matrix, distance_matrix, factories=None, division_point_ratio=0.5, mutation_prob=0.2):
         self.size = size
         self.flow_matrix = flow_matrix
         self.distance_matrix = distance_matrix
@@ -43,3 +44,24 @@ class Phenotype:
             if self.factories[i] in duplicated_genes:
                 duplicated_genes.remove(self.factories[i])
                 self.factories[i] = absent_genes.pop(0)
+
+    def calc_cost_and_fitness_functions(self, param=0):
+        self.cost = self.cost_function()
+        self.fitness = self.fitness_function(self.cost, param)
+
+    def cost_function(self):
+        new_distance_matrix = self.distance_matrix[:, self.factories][self.factories]
+        return np.sum(np.multiply(self.flow_matrix, new_distance_matrix))
+
+    def fitness_function(self, cost, param):
+        # return np.square(np.square(1 / cost))
+        result = 0
+        if param - cost > 0:
+            result = np.square(param - cost)
+        return result
+
+    def fitness_function_better(self, cost, param):
+        result = 0
+        if param - cost > 0:
+            result = np.square(param - cost)
+        return result
