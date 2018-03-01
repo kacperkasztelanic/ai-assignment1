@@ -5,6 +5,7 @@ SOURCE_EXT = 'dat'
 SOLUTION_DIR = 'solutions'
 SOLUTION_EXT = 'sln'
 
+
 def load_source(filename: str):
     path = SOURCE_DIR + '/' + filename + '.' + SOURCE_EXT
     data_file = open(path, 'r')
