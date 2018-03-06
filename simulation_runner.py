@@ -3,7 +3,7 @@ from timing import timing
 
 @timing
 def main():
-    sim = Simulation('had12')
+    sim = Simulation('had20')
     res = sim.run_simulation()
     no_iter=10
     res = list(map(lambda x: x[:-1], res))
