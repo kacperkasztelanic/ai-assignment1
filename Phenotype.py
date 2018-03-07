@@ -2,30 +2,28 @@ import numpy as np
 
 
 class Phenotype:
-    def __init__(self, size, flow_matrix, distance_matrix, factories=None, division_point_ratio=0.5, mutation_prob=0.2):
+    def __init__(self, size, factories=None):
         self.size = size
-        self.flow_matrix = flow_matrix
-        self.distance_matrix = distance_matrix
-        self.division_point_ratio = division_point_ratio
-        self.division_point = int(self.size * division_point_ratio)
-        self.mutation_prob = mutation_prob
         self.factories = factories
+        self.cost = None
         if self.factories is None:
             self.factories = np.arange(self.size)
             np.random.shuffle(self.factories)
 
-    def crossover(self, partner):
-        temp = self.factories[0:self.division_point]
-        temp = np.append(temp, partner.factories[partner.division_point:])
-        child = Phenotype(self.size, self.flow_matrix, self.distance_matrix, temp, self.division_point_ratio)
+    def crossover(self, partner, division_point_ratio):
+        division_point = int(self.size * division_point_ratio)
+        temp = self.factories[0:division_point]
+        temp = np.append(temp, partner.factories[division_point:])
+        child = Phenotype(self.size, temp)
         child.genome_repair()
         return child
 
-    def mutate(self):
+    def mutate(self, mutation_prob):
         for i in range(self.size):
-            if np.random.uniform(0, 1) <= self.mutation_prob:
+            if np.random.uniform(0, 1) <= mutation_prob:
                 j = np.random.randint(0, self.size)
                 self.factories[i], self.factories[j] = self.factories[j], self.factories[i]
+        return self
 
     def genome_repair(self):
         temp = np.copy(self.factories)
@@ -45,23 +43,6 @@ class Phenotype:
                 duplicated_genes.remove(self.factories[i])
                 self.factories[i] = absent_genes.pop(0)
 
-    def calc_cost_and_fitness_functions(self, param=0):
-        self.cost = self.cost_function()
-        self.fitness = self.fitness_function(self.cost, param)
-
-    def cost_function(self):
-        new_distance_matrix = self.distance_matrix[:, self.factories][self.factories]
-        return np.sum(np.multiply(self.flow_matrix, new_distance_matrix))
-
-    def fitness_function(self, cost, param):
-        # return np.square(np.square(1 / cost))
-        result = 0
-        if param - cost > 0:
-            result = np.square(param - cost)
-        return result
-
-    def fitness_function_better(self, cost, param):
-        result = 0
-        if param - cost > 0:
-            result = np.square(param - cost)
-        return result
+    def calc_cost_function(self, flow_matrix, distance_matrix):
+        new_distance_matrix = distance_matrix[:, self.factories][self.factories]
+        self.cost = np.sum(np.multiply(flow_matrix, new_distance_matrix))
