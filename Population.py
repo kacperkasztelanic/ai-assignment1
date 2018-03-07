@@ -27,19 +27,22 @@ class Population:
         self.fitness_values = None
 
     def generate_random_phenotypes(self):
-        self.phenotypes = np.vectorize(lambda x: Phenotype(size=self.phenotype_size))
+        temp = [Phenotype(size=self.phenotype_size) for i in range(self.population_size)]
+        self.phenotypes = np.asarray(temp)
         self.calc_cost_and_fitness_functions()
 
     def get_next_population(self):
+        self.new_phenotypes = []
         self.calc_prob_list()
         self.crossover()
         self.clone_parents_into_children()
         self.invoke_mutations()
         result = Population(phenotype_size=self.phenotype_size, flow_matrix=self.flow_matrix,
-                            distance_matrix=self.distance_matrix,
-                            population_size=self.population_size, crossover_prob=self.crossover_prob,
-                            mutation_prob=self.mutation_prob, division_point_ratio=self.division_point_ratio,
-                            selection_type=self.selection_type, tournament_size=self.tournament_size)
+                            distance_matrix=self.distance_matrix, population_size=self.population_size,
+                            crossover_prob=self.crossover_prob, mutation_prob=self.mutation_prob,
+                            division_point_ratio=self.division_point_ratio, selection_type=self.selection_type,
+                            tournament_size=self.tournament_size)
+        result.phenotypes = self.new_phenotypes
         result.calc_cost_and_fitness_functions()
         return result
 
@@ -56,7 +59,7 @@ class Population:
 
     def calc_prob_list(self):
         fitness_values_sum = np.sum(self.fitness_values)
-        self.prob_list = [self.phenotypes[i].fitness / fitness_values_sum for i in range(self.population_size)]
+        self.prob_list = self.fitness_values / fitness_values_sum
 
     def select_indices(self, n):
         if self.selection_type == SelectionType.ROULETTE:
@@ -65,7 +68,7 @@ class Population:
             return self.select_tournament(n)
 
     def select_roulette(self, n):
-        np.random.choice(self.population_size, size=n, replace=False, p=self.prob_list)
+        return np.random.choice(self.population_size, size=n, replace=False, p=self.prob_list)
 
     def select_tournament(self, n):
         indices = np.random.randint(0, self.population_size, size=self.tournament_size * n)
@@ -84,12 +87,13 @@ class Population:
             self.new_phenotypes.append(self.phenotypes[index])
 
     def invoke_mutations(self):
-        for p in self.phenotypes:
+        for p in self.new_phenotypes:
             p.mutate(self.mutation_prob)
 
     def get_results(self):
-        temp = np.ndarray.tolist(self.phenotypes)
-        min_cost = min(temp, key=lambda x: x.cost)
-        max_cost = max(temp, key=lambda x: x.cost)
-        avg_cost = sum(map(lambda x: x.cost, temp))
+        # temp = list(map(lambda x: x.cost, np.ndarray.tolist(self.phenotypes)))
+        temp = np.vectorize(lambda x: x.cost)(self.phenotypes)
+        min_cost = np.min(temp)
+        avg_cost = np.mean(temp)
+        max_cost = np.max(temp)
         return np.array([min_cost, avg_cost, max_cost])
