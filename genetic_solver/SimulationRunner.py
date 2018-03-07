@@ -1,6 +1,6 @@
 import numpy as np
 
-import data_saver as saver
+from utils import data_saver as saver
 
 
 class SimulationRunner:

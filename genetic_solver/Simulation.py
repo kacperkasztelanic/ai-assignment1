@@ -1,7 +1,7 @@
 import numpy as np
 
-import data_loader as loader
-from Population import Population
+from genetic_solver.Population import Population
+from utils import data_loader as loader
 
 
 class Simulation:

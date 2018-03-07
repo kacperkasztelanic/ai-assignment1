@@ -1,7 +1,7 @@
-from SelectionType import SelectionType
-from Simulation import Simulation
-from SimulationRunner import SimulationRunner
-from timing import timing
+from genetic_solver.SelectionType import SelectionType
+from genetic_solver.Simulation import Simulation
+from genetic_solver.SimulationRunner import SimulationRunner
+from utils.timing import timing
 
 FILES = ['had12', 'had14', 'had16', 'had18', 'had20']
 FILE_INDEX = 4

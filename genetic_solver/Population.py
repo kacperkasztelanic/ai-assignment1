@@ -1,7 +1,7 @@
 import numpy as np
 
-from Phenotype import Phenotype
-from SelectionType import SelectionType
+from genetic_solver.Phenotype import Phenotype
+from genetic_solver.SelectionType import SelectionType
 
 
 class Population:
