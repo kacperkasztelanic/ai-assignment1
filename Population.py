@@ -1,18 +1,12 @@
-from enum import Enum
-
 import numpy as np
 
 from Phenotype import Phenotype
-
-
-class SelectionType(Enum):
-    TOURNAMENT = 1
-    ROULETTE = 2
+from SelectionType import SelectionType
 
 
 class Population:
-    def __init__(self, phenotype_size, flow_matrix, distance_matrix, population_size, crossover_prob=0.8, mutation_prob=0.1,
-                 division_point_ratio=0.5, selection_type=SelectionType.ROULETTE, tournament_size=5):
+    def __init__(self, phenotype_size, flow_matrix, distance_matrix, population_size, crossover_prob, mutation_prob,
+                 division_point_ratio, selection_type, tournament_size):
         self.phenotype_size = phenotype_size
         self.flow_matrix = flow_matrix
         self.distance_matrix = distance_matrix
@@ -33,8 +27,6 @@ class Population:
         self.fitness_values = None
 
     def generate_random_phenotypes(self):
-        # temp = [Phenotype(size=self.phenotype_size) for i in range(self.population_size)]
-        # self.phenotypes = np.asarray(temp)
         self.phenotypes = np.vectorize(lambda x: Phenotype(size=self.phenotype_size))
         self.calc_cost_and_fitness_functions()
 

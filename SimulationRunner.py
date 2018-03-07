@@ -4,9 +4,7 @@ import data_saver as saver
 
 
 class SimulationRunner:
-    ITERATIONS = 10
-
-    def __init__(self, simulation, results_filename, iterations=ITERATIONS):
+    def __init__(self, simulation, results_filename, iterations):
         self.simulation = simulation
         self.iterations = iterations
         self.arr_results = np.empty(shape=(self.simulation.generations, 3, self.iterations))

@@ -2,21 +2,11 @@ import numpy as np
 
 import data_loader as loader
 from Population import Population
-from Population import SelectionType
 
 
 class Simulation:
-    POPULATION_SIZE = 100
-    GENERATIONS = 100
-    CROSSOVER_PROB = 0.8
-    MUTATION_PROB = 0.4
-    SELECTION_TYPE = SelectionType.TOURNAMENT
-    TOURNAMENT_SIZE = 10
-    DIVISION_POINT_RATIO = 0.5
-
-    def __init__(self, filename_root, population_size=POPULATION_SIZE, generations=GENERATIONS, crossover_prob=CROSSOVER_PROB,
-                 mutation_prob=MUTATION_PROB, division_point_ratio=DIVISION_POINT_RATIO, selection_type=SELECTION_TYPE,
-                 tournament_size=TOURNAMENT_SIZE):
+    def __init__(self, filename_root, population_size, generations, crossover_prob, mutation_prob, division_point_ratio,
+                 selection_type, tournament_size):
         self.filename_root = filename_root
         self.n, self.flow_matrix, self.distance_matrix = loader.load_source(self.filename_root)
         self.population_size = population_size
