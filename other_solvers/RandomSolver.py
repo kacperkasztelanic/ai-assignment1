@@ -3,7 +3,7 @@ import numpy as np
 
 class RandomSolver(object):
 
-    def __init__(self, n, flow_matrix, distance_matrix, times) -> None:
+    def __init__(self, n, flow_matrix, distance_matrix, times):
         self.n = n
         self.flow_matrix = flow_matrix
         self.distance_matrix = distance_matrix
