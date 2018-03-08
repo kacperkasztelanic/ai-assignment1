@@ -22,7 +22,7 @@ RESULTS_EXT = 'csv'
 RESULTS_FILENAME = 'results'
 
 FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8']
-FILE_INDEX = 5
+FILE_INDEX = 0
 ITERATIONS = 10
 POPULATION_SIZE = 100
 GENERATIONS = 200
