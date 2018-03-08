@@ -1,3 +1,3 @@
-import utils.data_loader
-import utils.data_saver
+from utils import DataLoader
+from utils import DataSaver
 import utils.timing

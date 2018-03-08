@@ -1,14 +1,14 @@
 import numpy as np
 
 from genetic_solver.Population import Population
-from utils import data_loader as loader
 
 
 class Simulation:
-    def __init__(self, filename_root, population_size, generations, crossover_prob, mutation_prob, division_point_ratio,
-                 selection_type, tournament_size):
-        self.filename_root = filename_root
-        self.n, self.flow_matrix, self.distance_matrix = loader.load_source(self.filename_root)
+    def __init__(self, n, flow_matrix, distance_matrix, population_size, generations, crossover_prob, mutation_prob,
+                 division_point_ratio, selection_type, tournament_size):
+        self.n = n
+        self.flow_matrix = flow_matrix
+        self.distance_matrix = distance_matrix
         self.population_size = population_size
         self.generations = generations
         self.crossover_prob = crossover_prob
