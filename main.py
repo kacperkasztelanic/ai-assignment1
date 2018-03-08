@@ -4,6 +4,8 @@ from genetic_solver.SimulationRunner import SimulationRunner
 from utils.timing import timing
 from utils.DataLoader import DataLoader
 from utils.DataSaver import DataSaver
+from other_solvers import BruteForceSolver
+from other_solvers import RandomSolver
 
 SOURCE_DIR = 'data'
 SOURCE_EXT = 'dat'
@@ -14,8 +16,8 @@ RESULTS_EXT = 'csv'
 
 RESULTS_FILENAME = 'results'
 
-FILES = ['had12', 'had14', 'had16', 'had18', 'had20']
-FILE_INDEX = 2
+FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8']
+FILE_INDEX = 0
 ITERATIONS = 10
 POPULATION_SIZE = 100
 GENERATIONS = 200
@@ -26,8 +28,7 @@ TOURNAMENT_SIZE = 5
 DIVISION_POINT_RATIO = 0.5
 
 
-@timing
-def main():
+def genetic_solver():
     loader = DataLoader(source_dir=SOURCE_DIR, source_ext=SOURCE_EXT, solution_dir=SOLUTION_DIR, solution_ext=SOLUTION_EXT)
     n, flow_matrix, distance_matrix = loader.load_source(FILES[FILE_INDEX])
 
@@ -37,9 +38,37 @@ def main():
                             tournament_size=TOURNAMENT_SIZE)
     multiple_sim = SimulationRunner(simulation=simulation, iterations=ITERATIONS)
     results = multiple_sim.run_simulation()
-    
+
     saver = DataSaver(results_dir=RESULTS_DIR, results_ext=RESULTS_EXT)
     saver.save(result=results, filename=RESULTS_FILENAME)
+
+
+def greedy_solver():
+    pass
+
+
+def brute_force_solver():
+    loader = DataLoader(source_dir=SOURCE_DIR, source_ext=SOURCE_EXT, solution_dir=SOLUTION_DIR, solution_ext=SOLUTION_EXT)
+    n, flow_matrix, distance_matrix = loader.load_source(FILES[FILE_INDEX])
+
+    brute_force = BruteForceSolver(n=n, flow_matrix=flow_matrix, distance_matrix=distance_matrix)
+    print(brute_force.run())
+
+
+def random_solver():
+    loader = DataLoader(source_dir=SOURCE_DIR, source_ext=SOURCE_EXT, solution_dir=SOLUTION_DIR, solution_ext=SOLUTION_EXT)
+    n, flow_matrix, distance_matrix = loader.load_source(FILES[FILE_INDEX])
+
+    times = 1000000
+    random = RandomSolver(n=n, flow_matrix=flow_matrix, distance_matrix=distance_matrix, times=times)
+    print(random.run())
+
+
+@timing
+def main():
+    # genetic_solver()
+    # brute_force_solver()
+    random_solver()
 
 
 if __name__ == "__main__":
