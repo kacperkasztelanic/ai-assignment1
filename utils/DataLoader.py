@@ -20,7 +20,8 @@ class DataLoader:
             matrix_distance = self.load_matrix(data_file, n)
         return n, matrix_flow, matrix_distance
 
-    def load_matrix(self, file, n: int) -> np.ndarray:
+    @staticmethod
+    def load_matrix(file, n: int) -> np.ndarray:
         matrix = ''
         for i in range(n):
             matrix += file.readline()

@@ -1,14 +1,13 @@
 import os
 
 import matplotlib.pyplot as plt
-import numpy as np
 
 from genetic_solver.SelectionType import SelectionType
 from genetic_solver.Simulation import Simulation
 from genetic_solver.SimulationRunner import SimulationRunner
 from greedy_solver import GreedySolver
-from other_solvers import BruteForceSolver
 from other_solvers import RandomSolver
+from other_solvers.BruteForceSolver import BruteForceSolver
 from utils.DataLoader import DataLoader
 from utils.DataSaver import DataSaver
 from utils.timing import timing
@@ -23,7 +22,7 @@ RESULTS_EXT = 'csv'
 RESULTS_FILENAME = 'results'
 
 FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8']
-FILE_INDEX = 4
+FILE_INDEX = 5
 ITERATIONS = 10
 POPULATION_SIZE = 100
 GENERATIONS = 200
@@ -40,8 +39,8 @@ def main():
     optimal_sol = loader.load_results(FILES[FILE_INDEX])[1]
 
     results = genetic_solver(n, flow_matrix, distance_matrix)
-    # brute_force_solver(n, flow_matrix, distance_matrix)
-    random_res = random_solver(n, flow_matrix, distance_matrix)
+    # optimal_sol = brute_force_solver(n, flow_matrix, distance_matrix)[0]
+    random_res = random_solver(n, flow_matrix, distance_matrix)[0]
     greedy_res = greedy_solver(n, flow_matrix, distance_matrix)
 
     save_results_to_csv(results)
@@ -81,7 +80,7 @@ def random_solver(n, flow_matrix, distance_matrix):
 
 
 def plot_graph(results, path=None, random_res=None, greedy_res=None, optimal_sol=None):
-    x_max = np.shape(results)[0] + 1
+    x_max = results.shape[0] + 1
     x = range(1, x_max)
     marker = '.'
     e_line_width = 1
@@ -94,11 +93,11 @@ def plot_graph(results, path=None, random_res=None, greedy_res=None, optimal_sol
                  label='Avg')
     plt.errorbar(x, list(results[:, 4]), list(results[:, 5]), marker=marker, elinewidth=e_line_width, capsize=capsize,
                  label='Max')
-    if not random_res is None:
+    if random_res is not None:
         plt.axhline(y=random_res, color='m', linestyle='-', label=str('Random (cost: ' + str(random_res) + ')'))
-    if not greedy_res is None:
+    if greedy_res is not None:
         plt.axhline(y=greedy_res, color='r', linestyle='-', label=str('Greedy (cost: ' + str(greedy_res) + ')'))
-    if not optimal_sol is None:
+    if optimal_sol is not None:
         plt.axhline(y=optimal_sol, color='c', linestyle='-', label=str('Optimal (cost: ' + str(optimal_sol) + ')'))
     plt.legend()
     plt.title('%s\nPop: %s | Px: %s | Pm: %s | %s | Tour: %s' %
@@ -106,7 +105,7 @@ def plot_graph(results, path=None, random_res=None, greedy_res=None, optimal_sol
                SELECTION_TYPE.name.lower(), str(TOURNAMENT_SIZE)))
     plt.ylabel('Cost')
     plt.xlabel('Generation')
-    if (path is not None):
+    if path is not None:
         plt.savefig(path)
     plt.show()
 

@@ -27,6 +27,7 @@ class GreedySolver:
 
             distance = self.distance_matrix[current_factory].reshape((self.n, 1))
             flow = self.distance_matrix[current_location].reshape((1, self.n)).astype(np.float)
+            # noinspection PyArgumentList
             routes_matrix = distance @ np.divide(1, flow, where=flow != 0, out=np.zeros_like(flow))
 
             best_route = np.min(routes_matrix[not_visited_factories][:, not_visited_locations])

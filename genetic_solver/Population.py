@@ -27,7 +27,7 @@ class Population:
         self.fitness_values = None
 
     def generate_random_phenotypes(self):
-        temp = [Phenotype(size=self.phenotype_size) for i in range(self.population_size)]
+        temp = [Phenotype(size=self.phenotype_size) for _ in range(self.population_size)]
         self.phenotypes = np.asarray(temp)
         self.calc_cost_and_fitness_functions()
 
@@ -47,12 +47,12 @@ class Population:
         return result
 
     def calc_cost_and_fitness_functions(self):
-        self.cost_values = []
+        cost_values = []
         self.fitness_values = []
         for p in self.phenotypes:
             p.calc_cost_function(flow_matrix=self.flow_matrix, distance_matrix=self.distance_matrix)
-            self.cost_values.append(p.cost)
-        self.fitness_values = np.asarray(self.cost_values)
+            cost_values.append(p.cost)
+        self.fitness_values = np.asarray(cost_values)
         max_val = np.max(self.fitness_values) * 1.1
         temp = (max_val - self.fitness_values) / max_val
         self.fitness_values = np.multiply(max_val * temp, temp)
@@ -72,7 +72,7 @@ class Population:
 
     def select_tournament(self, n):
         indices = np.random.randint(0, self.population_size, size=self.tournament_size * n)
-        costs = [(self.phenotypes[indices[i]], indices[i]) for i in range(np.shape(indices)[0])]
+        costs = [(self.phenotypes[indices[i]], indices[i]) for i in range(indices.shape[0])]
         costs.sort(key=lambda x: x[0].cost)
         return [costs[i][1] for i in range(n)]
 
