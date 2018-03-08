@@ -20,5 +20,4 @@ class SimulationRunner:
         self.results_min_avg_max_std[:, :3] = min_avg_max
         self.results_min_avg_max_std[:, 3:] = std
         self.results_min_avg_max_std = self.results_min_avg_max_std[:, np.array([0, 3, 1, 4, 2, 5])]
-        # print(self.results_min_avg_max_std)
         saver.save(result=self.results_min_avg_max_std, filename=self.results_filename)

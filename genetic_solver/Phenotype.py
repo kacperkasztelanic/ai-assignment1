@@ -26,6 +26,13 @@ class Phenotype:
         return self
 
     def genome_repair(self):
+        counts = np.bincount(self.factories, minlength=self.size)
+        absent_genes = np.core.numeric.where(counts == 0)[0]
+        duplicated_genes = np.where(counts == 2)[0]
+        for replace_to, replace_from in zip(absent_genes, duplicated_genes):
+            self.factories[np.where(self.factories == replace_from)[0][0]] = replace_to
+
+    def genome_repair_slow(self):
         temp = np.copy(self.factories)
         temp.sort()
         absent_genes = []
