@@ -1,8 +1,7 @@
 import numpy as np
 
 
-class GreedySolver(object):
-
+class GreedySolver:
     def __init__(self, n, flow_matrix, distance_matrix):
         self.n = n
         self.flow_matrix = flow_matrix
@@ -28,7 +27,7 @@ class GreedySolver(object):
 
             distance = self.distance_matrix[current_factory].reshape((self.n, 1))
             flow = self.distance_matrix[current_location].reshape((1, self.n)).astype(np.float)
-            routes_matrix = distance @ np.divide(1, flow, out=np.zeros_like(flow), where=flow != 0)
+            routes_matrix = distance @ np.divide(1, flow, where=flow != 0, out=np.zeros_like(flow))
 
             best_route = np.min(routes_matrix[not_visited_factories][:, not_visited_locations])
             current_factory, current_location = np.where(routes_matrix == best_route)
@@ -41,8 +40,7 @@ class GreedySolver(object):
                 current_factory, current_location = current_factory[0], current_location[0]
             solution[current_factory] = current_location
 
-        cost = cost_function(solution)
-
+        cost = self.cost_function(solution)
         return solution, cost
 
     def cost_function(self, factories):

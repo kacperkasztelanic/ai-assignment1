@@ -8,7 +8,7 @@ class SimulationRunner:
         self.arr_results = np.empty(shape=(self.simulation.generations, 3, self.iterations))
         self.results_min_avg_max_std = np.empty(shape=(self.simulation.generations, 6))
 
-    def run_simulation(self):
+    def run(self):
         for i in range(0, self.iterations):
             self.simulation.run()
             self.arr_results[:, :, i] = self.simulation.results
@@ -17,4 +17,4 @@ class SimulationRunner:
         self.results_min_avg_max_std[:, :3] = min_avg_max
         self.results_min_avg_max_std[:, 3:] = std
         self.results_min_avg_max_std = self.results_min_avg_max_std[:, np.array([0, 3, 1, 4, 2, 5])]
-        return self.results_min_avg_max_std
+        return np.around(self.results_min_avg_max_std, decimals=2)

@@ -91,7 +91,6 @@ class Population:
             p.mutate(self.mutation_prob)
 
     def get_results(self):
-        # temp = list(map(lambda x: x.cost, np.ndarray.tolist(self.phenotypes)))
         temp = np.vectorize(lambda x: x.cost)(self.phenotypes)
         min_cost = np.min(temp)
         avg_cost = np.mean(temp)

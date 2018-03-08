@@ -32,24 +32,6 @@ class Phenotype:
         for replace_to, replace_from in zip(absent_genes, duplicated_genes):
             self.factories[np.where(self.factories == replace_from)[0][0]] = replace_to
 
-    def genome_repair_slow(self):
-        temp = np.copy(self.factories)
-        temp.sort()
-        absent_genes = []
-        duplicated_genes = []
-        for i in range(self.size - 1):
-            if i not in temp:
-                absent_genes.append(i)
-            if temp[i] == temp[i + 1]:
-                duplicated_genes.append(temp[i])
-        if self.size - 1 not in temp:
-            absent_genes.append(self.size - 1)
-        np.random.shuffle(absent_genes)
-        for i in range(self.size - 1):
-            if self.factories[i] in duplicated_genes:
-                duplicated_genes.remove(self.factories[i])
-                self.factories[i] = absent_genes.pop(0)
-
     def calc_cost_function(self, flow_matrix, distance_matrix):
         new_distance_matrix = distance_matrix[:, self.factories][self.factories]
         self.cost = np.sum(np.multiply(flow_matrix, new_distance_matrix))
