@@ -1,2 +1,3 @@
 from other_solvers.BruteForceSolver import BruteForceSolver
+from other_solvers.GreedySolver import GreedySolver
 from other_solvers.RandomSolver import RandomSolver

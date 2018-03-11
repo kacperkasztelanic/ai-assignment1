@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from genetic_solver.SelectionType import SelectionType
 from genetic_solver.Simulation import Simulation
 from genetic_solver.SimulationRunner import SimulationRunner
-from greedy_solver import GreedySolver
+from other_solvers import GreedySolver
 from other_solvers import RandomSolver
 from other_solvers.BruteForceSolver import BruteForceSolver
 from utils.DataLoader import DataLoader
@@ -22,7 +22,7 @@ RESULTS_EXT = 'csv'
 RESULTS_FILENAME = 'results'
 
 FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8']
-FILE_INDEX = 0
+FILE_INDEX = 4
 ITERATIONS = 10
 POPULATION_SIZE = 100
 GENERATIONS = 200
@@ -32,6 +32,8 @@ SELECTION_TYPE = SelectionType.TOURNAMENT
 TOURNAMENT_SIZE = 5
 DIVISION_POINT_RATIO = 0.5
 
+TIMES_RANDOM = 100000
+
 
 def main():
     loader = DataLoader(source_dir=SOURCE_DIR, source_ext=SOURCE_EXT, solution_dir=SOLUTION_DIR, solution_ext=SOLUTION_EXT)
@@ -40,7 +42,7 @@ def main():
 
     results = genetic_solver(n, flow_matrix, distance_matrix)
     # optimal_sol = brute_force_solver(n, flow_matrix, distance_matrix)[0]
-    random_res = random_solver(n, flow_matrix, distance_matrix)[0]
+    random_res = random_solver(n, flow_matrix, distance_matrix, TIMES_RANDOM)[0]
     greedy_res = greedy_solver(n, flow_matrix, distance_matrix)
 
     save_results_to_csv(results)
@@ -73,8 +75,7 @@ def brute_force_solver(n, flow_matrix, distance_matrix):
 
 
 @timing
-def random_solver(n, flow_matrix, distance_matrix):
-    times = 100000
+def random_solver(n, flow_matrix, distance_matrix, times):
     random = RandomSolver(n=n, flow_matrix=flow_matrix, distance_matrix=distance_matrix, times=times)
     return random.run()
 
