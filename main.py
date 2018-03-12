@@ -21,15 +21,15 @@ RESULTS_EXT = 'csv'
 
 RESULTS_FILENAME = 'results'
 
-FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8']
-FILE_INDEX = 4
+FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8', 'chr25a']
+FILE_INDEX = 6
 ITERATIONS = 10
-POPULATION_SIZE = 100
-GENERATIONS = 200
-CROSSOVER_PROB = 0.8
+POPULATION_SIZE = 320
+GENERATIONS = 50
+CROSSOVER_PROB = 0.65
 MUTATION_PROB = 0.04
 SELECTION_TYPE = SelectionType.TOURNAMENT
-TOURNAMENT_SIZE = 5
+TOURNAMENT_SIZE = 20
 DIVISION_POINT_RATIO = 0.5
 
 TIMES_RANDOM = 100000
@@ -81,19 +81,20 @@ def random_solver(n, flow_matrix, distance_matrix, times):
 
 
 def plot_graph(results, path=None, random_res=None, greedy_res=None, optimal_sol=None):
-    x_max = results.shape[0] + 1
+    x_max = results[0].shape[0] + 1
     x = range(1, x_max)
     marker = '.'
     e_line_width = 1
     capsize = 2
     axes = plt.gca()
     axes.set_xlim([1, x_max])
-    plt.errorbar(x, list(results[:, 0]), list(results[:, 1]), marker=marker, elinewidth=e_line_width, capsize=capsize,
-                 label='Min')
-    plt.errorbar(x, list(results[:, 2]), list(results[:, 3]), marker=marker, elinewidth=e_line_width, capsize=capsize,
+    plt.errorbar(x, list(results[0][:, 0]), list(results[0][:, 1]), marker=marker, elinewidth=e_line_width, capsize=capsize,
+                 label=str('Min (cost: ' + str(int(round(min(results[0][:, 0]), 0))) + ')'))
+    plt.errorbar(x, list(results[0][:, 2]), list(results[0][:, 3]), marker=marker, elinewidth=e_line_width, capsize=capsize,
                  label='Avg')
-    plt.errorbar(x, list(results[:, 4]), list(results[:, 5]), marker=marker, elinewidth=e_line_width, capsize=capsize,
+    plt.errorbar(x, list(results[0][:, 4]), list(results[0][:, 5]), marker=marker, elinewidth=e_line_width, capsize=capsize,
                  label='Max')
+    plt.plot(x, list(results[1]), marker=marker, label=str('Best iteration (cost: ' + str(int(round(min(results[1]), 0))) + ')'))
     if random_res is not None:
         plt.axhline(y=random_res, color='m', linestyle='-', label=str('Random (cost: ' + str(random_res) + ')'))
     if greedy_res is not None:

@@ -17,4 +17,6 @@ class SimulationRunner:
         self.results_min_avg_max_std[:, :3] = min_avg_max
         self.results_min_avg_max_std[:, 3:] = std
         self.results_min_avg_max_std = self.results_min_avg_max_std[:, np.array([0, 3, 1, 4, 2, 5])]
-        return np.around(self.results_min_avg_max_std, decimals=2)
+        index_of_iter_with_lowest_end_cost = np.argmin(self.arr_results[-1, 0, :])
+        best_iter = self.arr_results[:, 0, index_of_iter_with_lowest_end_cost]
+        return np.around(self.results_min_avg_max_std, decimals=2), best_iter

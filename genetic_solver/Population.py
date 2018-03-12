@@ -55,7 +55,7 @@ class Population:
         self.fitness_values = np.asarray(cost_values)
         max_val = np.max(self.fitness_values) * 1.1
         temp = (max_val - self.fitness_values) / max_val
-        self.fitness_values = np.multiply(max_val * temp, temp)
+        self.fitness_values = np.multiply(np.multiply(np.multiply(max_val * temp, temp), temp), temp)
 
     def calc_prob_list(self):
         fitness_values_sum = np.sum(self.fitness_values)
