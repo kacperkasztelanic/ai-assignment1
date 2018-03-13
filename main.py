@@ -22,10 +22,10 @@ RESULTS_EXT = 'csv'
 RESULTS_FILENAME = 'results'
 
 FILES = ['had12', 'had14', 'had16', 'had18', 'had20', 'had8', 'chr25a']
-FILE_INDEX = 6
+FILE_INDEX = 4
 ITERATIONS = 10
 POPULATION_SIZE = 320
-GENERATIONS = 50
+GENERATIONS = 90
 CROSSOVER_PROB = 0.65
 MUTATION_PROB = 0.04
 SELECTION_TYPE = SelectionType.TOURNAMENT
@@ -81,6 +81,18 @@ def random_solver(n, flow_matrix, distance_matrix, times):
 
 
 def plot_graph(results, path=None, random_res=None, greedy_res=None, optimal_sol=None):
+    SMALL_SIZE = 16
+    MEDIUM_SIZE = 20
+    BIGGER_SIZE = 24
+
+    plt.rc('font', size=SMALL_SIZE)  # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)  # font size of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)  # font size of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)  # font size of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)  # font size of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)  # legend font size
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # font size of the figure title
+
     x_max = results[0].shape[0] + 1
     x = range(1, x_max)
     marker = '.'
@@ -94,14 +106,14 @@ def plot_graph(results, path=None, random_res=None, greedy_res=None, optimal_sol
                  label='Avg')
     plt.errorbar(x, list(results[0][:, 4]), list(results[0][:, 5]), marker=marker, elinewidth=e_line_width, capsize=capsize,
                  label='Max')
-    plt.plot(x, list(results[1]), marker=marker, label=str('Best iteration (cost: ' + str(int(round(min(results[1]), 0))) + ')'))
+    # plt.plot(x, list(results[1]), marker=marker, label=str('Best iteration (cost: ' + str(int(round(min(results[1]), 0))) + ')'))
     if random_res is not None:
         plt.axhline(y=random_res, color='m', linestyle='-', label=str('Random (cost: ' + str(random_res) + ')'))
     if greedy_res is not None:
         plt.axhline(y=greedy_res, color='r', linestyle='-', label=str('Greedy (cost: ' + str(greedy_res) + ')'))
     if optimal_sol is not None:
         plt.axhline(y=optimal_sol, color='c', linestyle='-', label=str('Optimal (cost: ' + str(optimal_sol) + ')'))
-    plt.legend()
+    plt.legend(loc=1)
     plt.title('%s\nPop: %s | Px: %s | Pm: %s | %s | Tour: %s' %
               (FILES[FILE_INDEX].upper(), str(POPULATION_SIZE), str(CROSSOVER_PROB), str(MUTATION_PROB),
                SELECTION_TYPE.name.lower(), str(TOURNAMENT_SIZE)))

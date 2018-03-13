@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Phenotype:
+class Genotype:
     def __init__(self, size, factories=None):
         self.size = size
         self.factories = factories
@@ -14,7 +14,7 @@ class Phenotype:
         division_point = int(self.size * division_point_ratio)
         temp = self.factories[0:division_point]
         temp = np.append(temp, partner.factories[division_point:])
-        child = Phenotype(self.size, temp)
+        child = Genotype(self.size, temp)
         child.genome_repair()
         return child
 

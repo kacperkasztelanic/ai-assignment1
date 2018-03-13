@@ -20,11 +20,11 @@ class Simulation:
         self.results = np.empty(shape=(self.generations, 3))
 
     def run(self):
-        self.populations = [Population(phenotype_size=self.n, flow_matrix=self.flow_matrix, distance_matrix=self.distance_matrix,
+        self.populations = [Population(genotype_size=self.n, flow_matrix=self.flow_matrix, distance_matrix=self.distance_matrix,
                                        population_size=self.population_size, crossover_prob=self.crossover_prob,
                                        mutation_prob=self.mutation_prob, division_point_ratio=self.division_point_ratio,
                                        selection_type=self.selection_type, tournament_size=self.tournament_size)]
-        self.populations[0].generate_random_phenotypes()
+        self.populations[0].generate_random_genotypes()
         self.update_results(0)
 
         for i in range(1, self.generations):
